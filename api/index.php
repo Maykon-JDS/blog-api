@@ -21,7 +21,7 @@ use Core\Router;
 
 Router::get('/v1/helloworld', [Controllers\HelloWorld::class, 'index']);
 
-Router::get('/v1', [Controllers\HelloWorld::class, 'teste']);
+// Router::get('/v1', [Controllers\HelloWorld::class, 'teste']);
 
 // Router::handleResponseCode(405, function () {});
 

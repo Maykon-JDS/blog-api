@@ -5,7 +5,8 @@
     "autoload": {
         "psr-4": {
             "Core\\": "./Core/",
-            "Controllers\\": "./Controllers/"
+            "Controllers\\": "./Controllers/",
+            "Enum\\": "./Enum/"
         }
     },
     "authors": [
