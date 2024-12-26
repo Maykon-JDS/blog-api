@@ -8,75 +8,157 @@ use \Enum\RequestMetodInterface;
 
 // TODO: Implementar um Facede
 
-class Router {
+class Router
+{
 
-    static public function get($uri, callable | array $params)
+    protected const PARAMETER_PATH_KEY_PATTERN = '/\{([a-zA-Z0-9_]+)\}/';
+
+    static public function get($route, callable | array $params)
     {
-        try {
 
-            self::handleRoute($uri, $params, RequestMetod::GET);
-
-        } catch (\Throwable $th) {
-
-            echo $th->getMessage();
-        }
+        self::handleRoute($route, $params, RequestMetod::GET);
     }
 
-    static public function post($uri, $params)
+    static public function post($route, $params)
     {
 
-        try {
-
-            self::handleRoute($uri, $params, RequestMetod::POST);
-
-        } catch (\Throwable $th) {
-
-            echo $th->getMessage();
-        }
+        self::handleRoute($route, $params, RequestMetod::POST);
     }
-    static public function put($uri, $params)
+
+    static public function put($route, $params)
     {
 
-        try {
-
-            self::handleRoute($uri, $params, RequestMetod::PUT);
-
-        } catch (\Throwable $th) {
-
-            echo $th->getMessage();
-        }
+        self::handleRoute($route, $params, RequestMetod::PUT);
     }
-    static public function patch($uri, $params)
+
+    static public function patch($route, $params)
     {
 
-        try {
-
-            self::handleRoute($uri, $params, RequestMetod::PATCH);
-
-        } catch (\Throwable $th) {
-
-            echo $th->getMessage();
-        }
+        self::handleRoute($route, $params, RequestMetod::PATCH);
     }
-    static public function delete($uri, $params)
+    static public function delete($route, $params)
     {
 
-        try {
-
-            self::handleRoute($uri, $params, RequestMetod::DELETE);
-
-        } catch (\Throwable $th) {
-
-            echo $th->getMessage();
-        }
+        self::handleRoute($route, $params, RequestMetod::DELETE);
     }
-    static public function options($uri, $params)
+    static public function options($route, $params)
+    {
+
+        self::handleRoute($route, $params, RequestMetod::OPTIONS);
+    }
+
+    static protected function executeClassMethod($params, $pathParams = [], $queryParameters = [])
+    {
+
+        if (class_exists($params[0])) {
+
+            $class = new $params[0]();
+
+            $metho = $params[1];
+
+            $class->$metho($pathParams, $queryParameters);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    static protected function executeCallable($callback, $pathParams = [], $queryParameters = [])
+    {
+
+        if (is_callable($callback)) {
+
+            $callback($pathParams, $queryParameters);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    static protected function checkRouteMatch($route)
+    {
+
+        $currentUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        $pattern = self::generateRoutePattern($route);
+
+        preg_match($pattern, $currentUri, $matches);
+
+        return !empty($matches) ? true : false;
+
+    }
+
+    static protected function extractPathParameters($route)
+    {
+
+        $currentUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+        preg_match(self::PARAMETER_PATH_KEY_PATTERN, $route, $parameterKeys);
+
+        array_shift($parameterKeys);
+
+        $pattern = self::generateRoutePattern($route);
+
+        preg_match($pattern, $currentUri, $matches);
+
+        array_shift($matches);
+
+        return !empty($matches) ? array_combine($parameterKeys, $matches) : [];
+
+    }
+
+    static protected function extractQueryParameters()
+    {
+
+        parse_str($_SERVER['QUERY_STRING'], $query);
+
+        return !empty($query) ? $query : [];
+
+    }
+
+    static protected function generateRoutePattern($route)
+    {
+
+        $pattern = preg_replace(self::PARAMETER_PATH_KEY_PATTERN, '([^/]+)', $route);
+
+        $pattern = "#^" . $pattern . "$#";
+
+        return $pattern;
+
+    }
+
+    static protected function checkRequestMethod(RequestMetodInterface $requestMethod)
+    {
+
+        return $_SERVER['REQUEST_METHOD'] == $requestMethod->value;
+    }
+
+    static protected function handleRoute($route, $params, RequestMetodInterface $requestMethod)
     {
 
         try {
 
-            self::handleRoute($uri, $params, RequestMetod::OPTIONS);
+            if (!self::checkRequestMethod($requestMethod)) {
+                return;
+            }
 
+            if (!self::checkRouteMatch($route)) {
+                return;
+            }
+
+            $pathParameters = self::extractPathParameters($route);
+
+            $queryParameters = self::extractQueryParameters();
+
+            if (self::executeCallable($params, $pathParameters, $queryParameters)) {
+                return;
+            }
+
+            if (self::executeClassMethod($params, $pathParameters, $queryParameters)) {
+                return;
+            }
         } catch (\Throwable $th) {
 
             echo $th->getMessage();
@@ -91,90 +173,4 @@ class Router {
     //         echo ("Teste");
     //     }
     // }
-
-    static protected function executeClassMethod($params)
-    {
-
-        if (class_exists($params[0])) {
-
-            $class = new $params[0]();
-
-            $metho = $params[1];
-
-            $class->$metho();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    static protected function executeCallable($callback)
-    {
-
-        if (is_callable($callback)) {
-
-            $callback();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    static protected function checkRouteMatch($uri)
-    {
-
-        $uriExploded = explode("/", $uri);
-
-        $uriExplodeFiltred = array_filter($uriExploded);
-
-        $currentUriExploded = explode("/", $_SERVER['REQUEST_URI']);
-
-        $currentUriExplodedFiltred = array_filter($currentUriExploded);
-
-        if ($uriExplodeFiltred == array_filter($currentUriExplodedFiltred)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    static protected function checkRequestMethod(RequestMetodInterface $requestMethod)
-    {
-
-        if ($_SERVER['REQUEST_METHOD'] == $requestMethod->value) {
-            return true;
-        }
-
-        return false;
-
-    }
-
-    static protected function handleRoute($uri, $params, RequestMetodInterface $requestMethod)
-    {
-
-        try {
-
-            if (!self::checkRequestMethod($requestMethod)) {
-                return;
-            }
-
-            if (!self::checkRouteMatch($uri)) {
-                return;
-            }
-
-            if (self::executeCallable($params)) {
-                return;
-            }
-
-            if (self::executeClassMethod($params)) {
-                return;
-            }
-
-        } catch (\Throwable $th) {
-
-            echo $th->getMessage();
-        }
-    }
 }
