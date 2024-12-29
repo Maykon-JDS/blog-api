@@ -2,7 +2,7 @@ name: Repository Dispatch Workflow
 
 on:
   repository_dispatch:
-    types: [repository-dispatch-workflow]
+    types: [repositoryDispatchWorkflow]
 
 jobs:
   example:
