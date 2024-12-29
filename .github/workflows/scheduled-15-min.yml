@@ -61,7 +61,7 @@ jobs:
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/OWNER/REPO/dispatches \
+            /repos/Maykon-JDS/math-function-calculator-api/dispatches \
             -f "event_type=repositoryDispatchWorkflow"
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
