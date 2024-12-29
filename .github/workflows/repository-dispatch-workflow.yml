@@ -1,0 +1,15 @@
+name: Repository Dispatch Workflow
+
+on:
+  repository_dispatch:
+    types: [repository-dispatch-workflow]
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run a script
+        run: echo "Triggered by repository_dispatch with event type custom-event-name"
