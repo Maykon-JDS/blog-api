@@ -4,14 +4,9 @@ namespace Core;
 
 use \Enum\RequestMetod;
 use \Enum\RequestMetodInterface;
-// use Core\ExceptionHandler;
 
-// TODO: Implementar um Facede
-
-class Router
+class Router extends HttpRequestHandler
 {
-
-    protected const PARAMETER_PATH_KEY_PATTERN = '/\{([a-zA-Z0-9_]+)\}/';
 
     static public function get($route, callable | array $params)
     {
@@ -47,7 +42,7 @@ class Router
         self::handleRoute($route, $params, RequestMetod::OPTIONS);
     }
 
-    static protected function executeClassMethod($params, $pathParams = [], $queryParameters = [])
+    static protected function executeClassMethod($params, $pathParameters = [], $queryParameters = [], $bodyParameters = [])
     {
 
         if (class_exists($params[0])) {
@@ -56,7 +51,7 @@ class Router
 
             $metho = $params[1];
 
-            $class->$metho($pathParams, $queryParameters);
+            $class->$metho($pathParameters, $queryParameters, $bodyParameters);
 
             return true;
         }
@@ -64,75 +59,17 @@ class Router
         return false;
     }
 
-    static protected function executeCallable($callback, $pathParams = [], $queryParameters = [])
+    static protected function executeCallable($callback, $pathParameters = [], $queryParameters = [], $bodyParameters = [])
     {
 
         if (is_callable($callback)) {
 
-            $callback($pathParams, $queryParameters);
+            $callback($pathParameters, $queryParameters, $bodyParameters);
 
             return true;
         }
 
         return false;
-    }
-
-    static protected function checkRouteMatch($route)
-    {
-
-        $currentUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-        $pattern = self::generateRoutePattern($route);
-
-        preg_match($pattern, $currentUri, $matches);
-
-        return !empty($matches) ? true : false;
-
-    }
-
-    static protected function extractPathParameters($route)
-    {
-
-        $currentUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-        preg_match(self::PARAMETER_PATH_KEY_PATTERN, $route, $parameterKeys);
-
-        array_shift($parameterKeys);
-
-        $pattern = self::generateRoutePattern($route);
-
-        preg_match($pattern, $currentUri, $matches);
-
-        array_shift($matches);
-
-        return !empty($matches) ? array_combine($parameterKeys, $matches) : [];
-
-    }
-
-    static protected function extractQueryParameters()
-    {
-
-        parse_str($_SERVER['QUERY_STRING'], $query);
-
-        return !empty($query) ? $query : [];
-
-    }
-
-    static protected function generateRoutePattern($route)
-    {
-
-        $pattern = preg_replace(self::PARAMETER_PATH_KEY_PATTERN, '([^/]+)', $route);
-
-        $pattern = "#^" . $pattern . "$#";
-
-        return $pattern;
-
-    }
-
-    static protected function checkRequestMethod(RequestMetodInterface $requestMethod)
-    {
-
-        return $_SERVER['REQUEST_METHOD'] == $requestMethod->value;
     }
 
     static protected function handleRoute($route, $params, RequestMetodInterface $requestMethod)
@@ -148,15 +85,17 @@ class Router
                 return;
             }
 
+            $bodyParameters = self::extractBodyParameters();
+
             $pathParameters = self::extractPathParameters($route);
 
             $queryParameters = self::extractQueryParameters();
 
-            if (self::executeCallable($params, $pathParameters, $queryParameters)) {
+            if (self::executeCallable($params, $pathParameters, $queryParameters, $bodyParameters)) {
                 return;
             }
 
-            if (self::executeClassMethod($params, $pathParameters, $queryParameters)) {
+            if (self::executeClassMethod($params, $pathParameters, $queryParameters, $bodyParameters)) {
                 return;
             }
         } catch (\Throwable $th) {

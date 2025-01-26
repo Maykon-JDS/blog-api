@@ -36,13 +36,18 @@ Router::get('/api/v1/porcentage/successive-equal-percentage-decrease', [Controll
 
 
 Router::get('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyGET']);
+
 Router::post('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyPOST']);
+
 Router::put('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyPUT']);
+
 Router::delete('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyDELETE']);
+
 Router::patch('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyPATCH']);
+
 Router::options('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyOPTIONS']);
 
-// Router::handleResponseCode(405, function () {
+
 
 // });
 // echo http_response_code();
