@@ -1,0 +1,69 @@
+################################### COMMANDS ###################################
+
+# Start the build
+# docker compose -f ./docker/docker-compose.yml build
+
+# Run the container
+# docker compose -f ./docker/docker-compose.yml up
+
+# Return low-level information on Docker objects
+# docker inspect api-php
+
+################################################################################
+
+name: api-php-project
+services:
+  api-php:
+    # develop:
+    #     watch:
+    #       - path: ../projeto
+    #         action: sync
+    #         target: /var/www
+    #         ignore:
+    #           - node_modules/
+    # tty: true
+    deploy:
+      # mode: replicated
+      # replicas: 2
+      # endpoint_mode: vip
+      labels:
+        com.example.description: "This label will appear on the web service"
+      # configures physical resource constraints for container to run on platform.
+      resources:
+        # The platform must prevent the container to allocate more.
+        limits:
+          cpus: '0.2'
+          memory: 500M
+        # The platform must guarantee the container can allocate at least the configured amount.
+        reservations:
+          cpus: '0.2'
+          memory: 200M
+    build:
+      context: ../
+      tags:
+        - "api-php:1.0"
+        - "api-php:latest"
+    ports:
+      - "8001:8001"
+    volumes:
+    #   creates a bind mount, meaning that changes made to the ./project
+    #   directory on the host will be reflected inside the container at
+    #   /var/www/localhost/htdocs/, and vice versa.
+      - ../api:/var/www/api
+    # creates a volume
+      - ../server/httpd.conf:/etc/apache2/apache2.conf
+      # - httpd-conf:/etc/apache2/
+
+    command: echo "I'm running ${COMPOSE_PROJECT_NAME}"
+
+    networks:
+      - network-1
+
+volumes:
+  httpd-conf:
+  project:
+    driver: local
+
+networks:
+  network-1:
+    driver: bridge

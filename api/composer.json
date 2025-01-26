@@ -1,0 +1,19 @@
+{
+    "name": "maykon-jds/php-api",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Core\\": "./Core/",
+            "Controllers\\": "./Controllers/",
+            "Enum\\": "./Enum/"
+        }
+    },
+    "authors": [
+        {
+            "name": "maykon-jds",
+            "email": "maykondias2001@gmail.com"
+        }
+    ],
+    "require": {}
+}

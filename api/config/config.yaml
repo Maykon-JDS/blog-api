@@ -1,0 +1,6 @@
+DBDRIVE: mysql
+DBHOST: localhost
+DBPORT: 3306
+DBUSER: root
+DBPASS: 
+DBNAME: php-api
