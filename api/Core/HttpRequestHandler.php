@@ -43,24 +43,24 @@ abstract class HttpRequestHandler{
 
     }
 
-    static protected function extractBodyParameters()
-    {
+    // static protected function extractBodyParameters()
+    // {
 
-        if(!self::allowsBodyParams()){
-            return [];
-        }
+    //     if(!self::allowsBodyParams()){
+    //         return [];
+    //     }
 
-        if(!self::hasContentTypeHeader()){
-            return [];
-        }
+    //     if(!self::hasContentTypeHeader()){
+    //         return [];
+    //     }
 
-        $RequestBodyParamsHandler = RequestBodyParamsHandlerFactory::createHandler();
+    //     $RequestBodyParamsHandler = RequestBodyParamsHandlerFactory::createHandler();
 
-        $bodyParameters = $RequestBodyParamsHandler->getRequestBody();
+    //     $bodyParameters = $RequestBodyParamsHandler->getRequestBody();
 
-        return $bodyParameters;
+    //     return $bodyParameters;
 
-    }
+    // }
 
     static protected function extractPathParameters($route)
     {

@@ -85,17 +85,17 @@ class Router extends HttpRequestHandler
                 return;
             }
 
-            $bodyParameters = self::extractBodyParameters();
+            // $bodyParameters = self::extractBodyParameters();
 
             $pathParameters = self::extractPathParameters($route);
 
             $queryParameters = self::extractQueryParameters();
 
-            if (self::executeCallable($params, $pathParameters, $queryParameters, $bodyParameters)) {
+            if (self::executeCallable($params, $pathParameters, $queryParameters)) {
                 return;
             }
 
-            if (self::executeClassMethod($params, $pathParameters, $queryParameters, $bodyParameters)) {
+            if (self::executeClassMethod($params, $pathParameters, $queryParameters)) {
                 return;
             }
         } catch (\Throwable $th) {

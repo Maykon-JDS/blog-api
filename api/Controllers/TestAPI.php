@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use stdClass;
+use Libs\Adapter\Request\Request;
 
 class TestAPI extends Controller {
 
@@ -98,7 +99,9 @@ class TestAPI extends Controller {
         $std->pathParams = $pathParameters;
         $std->queryParameters = $queryParameters;
 
-        TestAPI::returnJson($std);
+        $request = new Request();
+
+        TestAPI::returnJson($request->getAcceptableContentTypes());
 
     }
 

@@ -6,7 +6,9 @@
         "psr-4": {
             "Core\\": "./Core/",
             "Controllers\\": "./Controllers/",
-            "Enum\\": "./Enum/"
+            "Enum\\": "./Enum/",
+            "Libs\\": "./Libs/"
+
         }
     },
     "authors": [
@@ -15,5 +17,8 @@
             "email": "maykondias2001@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "stichoza/google-translate-php": "^5.2",
+        "symfony/http-foundation": "^7.2"
+    }
 }
