@@ -4,6 +4,7 @@ namespace Controllers;
 
 use stdClass;
 use Libs\Adapter\Request\Request;
+use Libs\Adapter\Response\Response;
 
 class TestAPI extends Controller {
 
@@ -100,8 +101,11 @@ class TestAPI extends Controller {
         $std->queryParameters = $queryParameters;
 
         $request = new Request();
+        $response = new Response();
 
-        TestAPI::returnJson($request->getAcceptableContentTypes());
+        $response->setContent(json_encode($std));
+        $response->setStatusCode(200);
+        $response->send();
 
     }
 
