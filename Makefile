@@ -2,19 +2,19 @@
 include .env
 
 up:
-	@docker-compose -f ./docker/docker-compose.yml up -d
+	@docker compose -f ./docker/docker-compose.yml up -d
 
 stop:
-	@docker-compose -f ./docker/docker-compose.yml stop
+	@docker compose -f ./docker/docker-compose.yml stop
 
 down:
-	@docker-compose down -f ./docker-compose.yml
+	@docker compose down -f ./docker-compose.yml
 
 status:
-	@docker-compose ps
+	@docker compose ps
 
 logs:
-	@docker-compose logs -f
+	@docker compose logs -f
 
 # php:
 # 	@docker-compose exec php-fpm bash

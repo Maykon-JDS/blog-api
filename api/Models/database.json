@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "username": "admin",
+        "password": "admin",
+        "email": null,
+        "token": "0637b30b6b3ab6421529d7e6b1296ad9",
+        "expiration": 60,
+        "generated_at": "2025-01-28 02:26:41"
+    },
+    {
+        "id": 2,
+        "username": "user",
+        "password": "user",
+        "email": null,
+        "token": null,
+        "expiration": null,
+        "generated_at": null
+    }
+]

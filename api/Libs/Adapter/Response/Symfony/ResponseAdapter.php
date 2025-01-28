@@ -21,6 +21,10 @@ class ResponseAdapter implements ResponseInterface{
         return $this->response->setStatusCode($statusCode);
     }
 
+    public function setHeader($name, $value){
+        return $this->response->headers->set($name, $value);
+    }
+
     public function send(){
         return $this->response->send();
     }

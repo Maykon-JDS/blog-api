@@ -81,19 +81,19 @@ Router::post('/api/v1/teste', function($pathParameters, $queryParameters){
 });
 
 
-Router::get('/api/v1/porcentage/porcentage', [Controllers\Percentage::class, 'percentage']);
+// Router::get('/api/v1/porcentage/porcentage', [Controllers\Percentage::class, 'percentage']);
 
-Router::get('/api/v1/porcentage/simple-interest', [Controllers\Percentage::class, 'simpleInterest']);
+// Router::get('/api/v1/porcentage/simple-interest', [Controllers\Percentage::class, 'simpleInterest']);
 
-Router::get('/api/v1/porcentage/compound-interest', [Controllers\Percentage::class, 'compoundInterest']);
+// Router::get('/api/v1/porcentage/compound-interest', [Controllers\Percentage::class, 'compoundInterest']);
 
-Router::get('/api/v1/porcentage/percentage-increase', [Controllers\Percentage::class, 'percentageIncrease']);
+// Router::get('/api/v1/porcentage/percentage-increase', [Controllers\Percentage::class, 'percentageIncrease']);
 
-Router::get('/api/v1/porcentage/percentage-decrease', [Controllers\Percentage::class, 'percentageDecrease']);
+// Router::get('/api/v1/porcentage/percentage-decrease', [Controllers\Percentage::class, 'percentageDecrease']);
 
-Router::get('/api/v1/porcentage/successive-equal-percentage-increases', [Controllers\Percentage::class, 'successiveEqualPercentageIncreases']);
+// Router::get('/api/v1/porcentage/successive-equal-percentage-increases', [Controllers\Percentage::class, 'successiveEqualPercentageIncreases']);
 
-Router::get('/api/v1/porcentage/successive-equal-percentage-decrease', [Controllers\Percentage::class, 'successiveEqualPercentageDecrease']);
+// Router::get('/api/v1/porcentage/successive-equal-percentage-decrease', [Controllers\Percentage::class, 'successiveEqualPercentageDecrease']);
 
 
 
@@ -108,6 +108,11 @@ Router::delete('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyDEL
 Router::patch('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyPATCH']);
 
 Router::options('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyOPTIONS']);
+
+Router::get('/api/login', [Controllers\User::class, 'login']);
+
+Router::get('/api/te', [Controllers\User::class, 'teste']);
+// Router::get('/api/te2', [Controllers\User::class, 'teste2']);
 
 
 // Router::get('/v1/helloworld', [Controllers\HelloWorld::class, 'index']);
