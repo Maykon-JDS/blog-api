@@ -3,6 +3,9 @@
 require_once "vendor/autoload.php";
 
 use Core\Router;
+use Middlewares\Authentication as AuthenticationMiddleware;
+use Middlewares\Teste as TesteMiddleware;
+use Libs\Adapter\Request\Request;
 
 use Stichoza\GoogleTranslate\GoogleTranslate;
 // use Core\FactoryMethods\RequestBodyParamsHandlerFactory\RequestBodyParamsHandlerFactory;
@@ -25,6 +28,17 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 // echo ("<pre>");
 
+Router::get('/api/login', [Controllers\User::class, 'login']);
+
+$request = new Request();
+
+$contentJson = $request->getContent();
+
+$content = json_decode($contentJson, true);
+
+$authenticationMiddleware = new AuthenticationMiddleware();
+
+$authenticationMiddleware->handle($content['token'] ?? null);
 
 Router::get('/api/v1/translate/{source}/{target}', function ($pathParameters, $queryParameters) {
 
@@ -109,9 +123,11 @@ Router::patch('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyPATC
 
 Router::options('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyOPTIONS']);
 
-Router::get('/api/login', [Controllers\User::class, 'login']);
 
 Router::get('/api/te', [Controllers\User::class, 'teste']);
+
+
+
 // Router::get('/api/te2', [Controllers\User::class, 'teste2']);
 
 

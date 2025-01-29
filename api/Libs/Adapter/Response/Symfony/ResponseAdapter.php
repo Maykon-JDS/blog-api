@@ -26,6 +26,7 @@ class ResponseAdapter implements ResponseInterface{
     }
 
     public function send(){
-        return $this->response->send();
+        $this->response->send();
+        exit;
     }
 }
