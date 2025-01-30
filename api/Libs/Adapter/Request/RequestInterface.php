@@ -7,9 +7,5 @@ interface RequestInterface {
 
     public function getContent();
     public function getAcceptableContentTypes();
-    // public function getResponse();
-    // public function getMethod();
-    // public function getPathInfo();
-
-
+    public function getHeader(string $name);
 }

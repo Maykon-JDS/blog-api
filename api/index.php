@@ -4,10 +4,13 @@ require_once "vendor/autoload.php";
 
 use Core\Router;
 use Middlewares\Authentication as AuthenticationMiddleware;
+use Middlewares\JsonRequest;
+use Middlewares\AcceptRequest;
 use Middlewares\Teste as TesteMiddleware;
 use Libs\Adapter\Request\Request;
+use Libs\Adapter\Response\Response;
 
-use Stichoza\GoogleTranslate\GoogleTranslate;
+// use Stichoza\GoogleTranslate\GoogleTranslate;
 // use Core\FactoryMethods\RequestBodyParamsHandlerFactory\RequestBodyParamsHandlerFactory;
 
  // Translates into English
@@ -28,17 +31,22 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 // echo ("<pre>");
 
-Router::get('/api/login', [Controllers\User::class, 'login']);
 
 $request = new Request();
 
-$contentJson = $request->getContent();
+$response = new Response();
 
-$content = json_decode($contentJson, true);
+$jsonRequest = new JsonRequest();
+
+$jsonRequest->chain(new AcceptRequest());
+
+$jsonRequest->handle($request);
+
+Router::get('/api/login', [Controllers\User::class, 'login']);
 
 $authenticationMiddleware = new AuthenticationMiddleware();
 
-$authenticationMiddleware->handle($content['token'] ?? null);
+$authenticationMiddleware->handle($request);
 
 Router::get('/api/v1/translate/{source}/{target}', function ($pathParameters, $queryParameters) {
 

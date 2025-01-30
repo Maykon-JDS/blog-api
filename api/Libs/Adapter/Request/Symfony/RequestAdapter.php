@@ -20,4 +20,11 @@ class RequestAdapter implements RequestInterface{
     public function getAcceptableContentTypes(){
         return $this->request->getAcceptableContentTypes();
     }
+
+    public function getHeader(string $name){
+
+        $upperName = strtoupper($name);
+
+        return $_SERVER[$upperName] ?? null;
+    }
 }

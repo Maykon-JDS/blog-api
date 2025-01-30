@@ -2,11 +2,13 @@
 
 namespace Middlewares;
 
+use Libs\Adapter\Request\RequestInterface;
+
 abstract class Handler
 {
     protected ?Handler $next = null;
 
-    abstract protected function process($request) : void;
+    abstract protected function process(RequestInterface $request) : void;
 
     abstract protected function breakChain() : void;
 
@@ -20,7 +22,7 @@ abstract class Handler
 
     }
 
-    public function handle($request) : void
+    public function handle(RequestInterface $request) : void
     {
         $this->process($request);
 
@@ -28,7 +30,7 @@ abstract class Handler
 
     }
 
-    protected function callNextHandler($request) : void
+    protected function callNextHandler(RequestInterface $request) : void
     {
 
         if ($this->next) {
