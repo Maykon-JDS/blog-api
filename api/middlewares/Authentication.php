@@ -33,7 +33,7 @@ class Authentication extends Handler
 
         $response->setHeader('Content-Type', 'application/json');
 
-        $response->setContent(json_encode(['Não Autenticado']));
+        $response->setContent(json_encode(['Unauthorized']));
 
         $response->setStatusCode(401);
 
