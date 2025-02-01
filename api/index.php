@@ -42,7 +42,7 @@ $jsonRequest->chain(new AcceptRequest());
 
 $jsonRequest->handle($request);
 
-Router::get('/api/login', [Controllers\User::class, 'login']);
+Router::get('/api/login', [Controllers\User::class, 'login'])->name('login');
 
 $authenticationMiddleware = new AuthenticationMiddleware();
 
@@ -119,7 +119,7 @@ Router::post('/api/v1/teste', function($pathParameters, $queryParameters){
 
 
 
-Router::get('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyGET']);
+Router::get('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyGET'])->name('verify');
 
 Router::post('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyPOST']);
 
@@ -131,13 +131,10 @@ Router::patch('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyPATC
 
 Router::options('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyOPTIONS']);
 
-
 Router::get('/api/te', [Controllers\User::class, 'teste']);
 
 
-
 // Router::get('/api/te2', [Controllers\User::class, 'teste2']);
-
 
 // Router::get('/v1/helloworld', [Controllers\HelloWorld::class, 'index']);
 

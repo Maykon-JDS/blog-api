@@ -24,6 +24,7 @@ abstract class Handler
 
     public function handle(RequestInterface $request) : void
     {
+
         $this->process($request);
 
         $this->callNextHandler($request);
