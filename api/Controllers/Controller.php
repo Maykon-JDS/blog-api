@@ -7,6 +7,8 @@ abstract class Controller{
 
     protected function returnJson($data): void {
 
+        // TODO: Implementar com o Adapter Response
+
         header_remove('Set-Cookie');
 
         header('Content-Type: application/json');
@@ -19,6 +21,8 @@ abstract class Controller{
 
 
     public function __call($name, $arguments){
+
+        // TODO: Implementar com o Adapter Response
 
         http_response_code(405);
 

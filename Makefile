@@ -2,13 +2,13 @@
 include .env
 
 up:
-	@docker compose -f ./docker/docker-compose.yml up -d
+	@docker compose -f ./docker-compose.yml up -d
 
 stop:
-	@docker compose -f ./docker/docker-compose.yml stop
+	@docker compose -f ./docker-compose.yml stop
 
 down:
-	@docker compose down -f ./docker-compose.yml
+	@docker compose down
 
 status:
 	@docker compose ps
@@ -19,8 +19,8 @@ logs:
 # php:
 # 	@docker-compose exec php-fpm bash
 
-# mysql:
-# 	@docker exec -ti docker-project-database mysql --password=$(DB_PASSWORD) --database=$(DB_DATABASE)
+mysql:
+	@docker exec -ti docker-database mysql --password=$(DB_PASSWORD) --database=$(DB_DATABASE)
 
 # composer:
 # 	docker run -it \
@@ -33,4 +33,4 @@ info:
 	@docker info
 
 networks:
-	@docker networks -ls
+	@docker network ls

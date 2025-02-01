@@ -39,7 +39,7 @@ services:
           cpus: '0.2'
           memory: 200M
     build:
-      context: ../
+      context: ./docker
       tags:
         - "api-php:1.0"
         - "api-php:latest"
@@ -49,16 +49,27 @@ services:
     #   creates a bind mount, meaning that changes made to the ./project
     #   directory on the host will be reflected inside the container at
     #   /var/www/localhost/htdocs/, and vice versa.
-      - ../api:/var/www/api
+      - ./api:/var/www/api
     # creates a volume
-      - ../server/httpd.conf:/etc/apache2/apache2.conf
+      - ./server/httpd.conf:/etc/apache2/apache2.conf
       # - httpd-conf:/etc/apache2/
 
     command: echo "I'm running ${COMPOSE_PROJECT_NAME}"
 
     networks:
       - network-1
-
+  docker-database:
+      image: mysql:latest
+      container_name: docker-database
+      volumes:
+        - ./docker/database:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        MYSQL_DATABASE: ${DB_DATABASE}
+      ports:
+        - ${CONTAINER_DB_PORT}:3306
+      networks:
+        - network-1
 volumes:
   httpd-conf:
   project:
