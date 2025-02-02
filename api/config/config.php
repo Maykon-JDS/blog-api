@@ -1,5 +1,5 @@
 <?php
 
-namespace config;
+namespace Config;
 
-define('ROOT_PATH', dirname(__DIR__) . "/../");
+define('ROOT_PATH', realpath("./"));

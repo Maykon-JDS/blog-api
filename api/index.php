@@ -1,14 +1,14 @@
 <?php
 
-require_once "vendor/autoload.php";
+require_once "./Core/bootstrap.php";
 
 use Core\Router;
 use Middlewares\Authentication as AuthenticationMiddleware;
 use Middlewares\JsonRequest;
 use Middlewares\AcceptRequest;
-use Middlewares\Teste as TesteMiddleware;
 use Libs\Adapter\Request\Request;
 use Libs\Adapter\Response\Response;
+
 
 // use Stichoza\GoogleTranslate\GoogleTranslate;
 // use Core\FactoryMethods\RequestBodyParamsHandlerFactory\RequestBodyParamsHandlerFactory;
@@ -31,6 +31,15 @@ use Libs\Adapter\Response\Response;
 
 // echo ("<pre>");
 
+$pdo = new PDO($_ENV["DB_CONNECTION"] . ':host='. $_ENV["DB_HOST"] .';dbname=' . $_ENV["DB_DATABASE"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"]);
+
+$result = $pdo->query("SELECT * FROM teste");
+
+print_r($result->fetchAll());
+
+// phpinfo();
+
+exit;
 
 $request = new Request();
 
@@ -101,22 +110,6 @@ Router::post('/api/v1/teste', function($pathParameters, $queryParameters){
     echo "</pre>";
 
 });
-
-
-// Router::get('/api/v1/porcentage/porcentage', [Controllers\Percentage::class, 'percentage']);
-
-// Router::get('/api/v1/porcentage/simple-interest', [Controllers\Percentage::class, 'simpleInterest']);
-
-// Router::get('/api/v1/porcentage/compound-interest', [Controllers\Percentage::class, 'compoundInterest']);
-
-// Router::get('/api/v1/porcentage/percentage-increase', [Controllers\Percentage::class, 'percentageIncrease']);
-
-// Router::get('/api/v1/porcentage/percentage-decrease', [Controllers\Percentage::class, 'percentageDecrease']);
-
-// Router::get('/api/v1/porcentage/successive-equal-percentage-increases', [Controllers\Percentage::class, 'successiveEqualPercentageIncreases']);
-
-// Router::get('/api/v1/porcentage/successive-equal-percentage-decrease', [Controllers\Percentage::class, 'successiveEqualPercentageDecrease']);
-
 
 
 Router::get('/api/v1/verify/{teste}', [Controllers\TestAPI::class, 'verifyGET'])->name('verify');

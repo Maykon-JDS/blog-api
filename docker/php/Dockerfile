@@ -23,6 +23,10 @@
 
 FROM php:8.2-apache
 
+# RUN apt-get update && apt-get upgrade -y
+
+RUN docker-php-ext-install pdo pdo_mysql
+
 RUN a2enmod headers
 
 RUN a2enmod rewrite
@@ -43,13 +47,13 @@ RUN chmod -R 777 /var/lib/
 
 RUN chmod -R 755 /var/www/
 
-COPY  ["/api/","/var/www/api/"]
+COPY  ["api/","/var/www/api/"]
 
-COPY  ["/server/cgi-bin","/var/www/api/cgi-bin/"]
+COPY  ["docker/server/cgi-bin","/var/www/api/cgi-bin/"]
 
-COPY  ["/server/ports.conf","/etc/apache2/ports.conf"]
+COPY  ["docker/server/ports.conf","/etc/apache2/ports.conf"]
 
-COPY  ["/server/vh-api.conf","/etc/apache2/sites-available/vh-api.conf"]
+COPY  ["docker/server/vh-api.conf","/etc/apache2/sites-available/vh-api.conf"]
 
 RUN ln -s /etc/apache2/sites-available/vh-api.conf /etc/apache2/sites-enabled/vh-api.conf
 

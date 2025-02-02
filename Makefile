@@ -1,14 +1,14 @@
 # Load .env file if it exists
-include .env
+include ./api/.env
 
 up:
-	@docker compose -f ./docker-compose.yml up -d
+	@docker compose -f ./api/docker-compose.yml up -d
 
 stop:
-	@docker compose -f ./docker-compose.yml stop
+	@docker compose -f ./api/docker-compose.yml stop
 
 down:
-	@docker compose down
+	@docker compose -f ./api/docker-compose.yml down
 
 status:
 	@docker compose ps
