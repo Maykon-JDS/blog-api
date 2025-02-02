@@ -1,6 +1,7 @@
 <?php
 
-require_once "./Core/bootstrap.php";
+require_once __DIR__ . "/Config/paths.php";
+require_once ROOT_PATH . "/Core/bootstrap.php";
 
 use Core\Router;
 use Middlewares\Authentication as AuthenticationMiddleware;
@@ -31,13 +32,13 @@ use Libs\Adapter\Response\Response;
 
 // echo ("<pre>");
 
-$pdo = new PDO($_ENV["DB_CONNECTION"] . ':host='. $_ENV["DB_HOST"] .';dbname=' . $_ENV["DB_DATABASE"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"]);
+// $pdo = new PDO($_ENV["DB_DRIVER"] . ':host='. $_ENV["DB_HOST"] .';dbname=' . $_ENV["DB_DATABASE"], $_ENV["DB_USERNAME"], $_ENV["DB_PASSWORD"]);
 
-$result = $pdo->query("SELECT * FROM teste");
+// $result = $pdo->query("SELECT * FROM teste");
 
-print_r($result->fetchAll());
+// print_r($result->fetchAll());
 
-// phpinfo();
+phpinfo();
 
 exit;
 

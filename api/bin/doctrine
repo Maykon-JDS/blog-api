@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+// bin/doctrine
+
+require_once __DIR__ . '/../Config/paths.php';
+require_once ROOT_PATH . '/vendor/autoload.php';
+require_once ROOT_PATH . '/Config/dotenv.php';
+
+$_ENV['DB_PORT'] = $_ENV['CONTAINER_DB_PORT'];
+
+require_once ROOT_PATH . '/Config/doctrine.php';
+
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+
+ConsoleRunner::run(
+    new SingleManagerProvider($entityManager)
+);

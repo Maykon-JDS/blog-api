@@ -1,0 +1,17 @@
+<?php
+// bin/doctrine
+
+require_once __DIR__ . '/../Config/paths.php';
+require_once ROOT_PATH . '/vendor/autoload.php';
+require_once ROOT_PATH . '/Config/dotenv.php';
+
+$_ENV['DB_PORT'] = $_ENV['CONTAINER_DB_PORT'];
+
+require_once ROOT_PATH . '/Config/doctrine.php';
+
+$productRepository = $entityManager->getRepository('Entities\Product');
+$products = $productRepository->findAll();
+
+foreach ($products as $product) {
+    echo sprintf("-%s\n", $product->getName());
+}

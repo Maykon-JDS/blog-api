@@ -11,7 +11,7 @@ down:
 	@docker compose -f ./api/docker-compose.yml down
 
 status:
-	@docker compose ps
+	@docker compose -f ./api/docker-compose.yml ps
 
 logs:
 	@docker compose logs -f
@@ -34,3 +34,33 @@ info:
 
 networks:
 	@docker network ls
+
+phpmd.ansi:
+	@php ./api/vendor/bin/phpmd ./api/Core ansi --color  ./api/rulesets.xml
+
+phpmd.text:
+	@php ./api/vendor/bin/phpmd ./api/Core text --color  ./api/rulesets.xml
+
+phpmd.json:
+	@php ./api/vendor/bin/phpmd ./api/Core json --color  ./api/rulesets.xml
+
+orm.drop:
+	@php api/bin/doctrine orm:schema-tool:drop --force
+
+orm.create:
+	@php api/bin/doctrine orm:schema-tool:create
+
+orm.update:
+	@php api/bin/doctrine orm:schema-tool:update --force
+
+orm.c.products:
+	@php api/bin/create_products
+
+orm.l.products:
+	@php api/bin/list_products
+
+orm.s.products:
+	@php api/bin/show_products
+
+orm.u.products:
+	@php api/bin/update_products

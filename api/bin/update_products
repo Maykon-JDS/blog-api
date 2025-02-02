@@ -1,0 +1,26 @@
+<?php
+// update_product.php <id> <new-name>
+require_once __DIR__ . '/../Config/paths.php';
+require_once ROOT_PATH . '/vendor/autoload.php';
+require_once ROOT_PATH . '/Config/dotenv.php';
+
+$_ENV['DB_PORT'] = $_ENV['CONTAINER_DB_PORT'];
+
+require_once ROOT_PATH . '/Config/doctrine.php';
+
+$id = 1;
+
+$product = $entityManager->find('Entities\Product', $id);
+
+if ($product === null) {
+    echo "Product $id does not exist.\n";
+    exit(1);
+}
+
+$newName = 'Product ' . rand(1, 100);
+
+$product->setName($newName);
+
+$entityManager->flush();
+
+echo "Product $id updated to {$product->getName()} .\n";
