@@ -5,7 +5,7 @@ namespace Controllers;
 use stdClass;
 use Libs\Adapter\Request\Request;
 use Libs\Adapter\Response\Response;
-use Services\Authentication;
+use Services\AuthenticationService;
 use Models\User as UserModel;
 
 
@@ -23,7 +23,7 @@ class User extends Controller {
 
         $response->setHeader('Content-Type', 'application/json');
 
-        // $token = Authentication::attempt("admin", "admin");
+        // $token = AuthenticationService::attempt("admin", "admin");
 
         if ($token) {
             $response->setContent(json_encode(['Login successful', 'token' => $token]));
@@ -73,7 +73,7 @@ class User extends Controller {
 
         $response->setHeader('Content-Type', 'application/json');
 
-        if (Authentication::check('0637b30b6b3ab6421529d7e6b1296ad9')) {
+        if (AuthenticationService::check('0637b30b6b3ab6421529d7e6b1296ad9')) {
             $response->setContent(json_encode(['Authorized']));
             $response->setStatusCode(200);
         } else {

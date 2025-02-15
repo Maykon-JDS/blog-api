@@ -6,30 +6,31 @@ use Services\Interface\Auth;
 use Models\User;
 use Models\FailedLogin;
 use DTO\FailedLoginDTO;
+use Exceptions\UserNotFoundException;
 use stdClass;
 
-class Authentication implements Auth {
+class AuthenticationService implements Auth {
 
     static public function attempt($email, $password) {
 
         $userModel = new User();
-        $failedLoginModel = new FailedLogin();
-        $failedLoginStdClass = new stdClass();
+        // $failedLoginModel = new FailedLogin();
+        // $failedLoginStdClass = new stdClass();
 
-        $failedLoginStdClass->user = null;
-        $failedLoginStdClass->username = null;
-        $failedLoginStdClass->user_agent = $_SERVER['HTTP_USER_AGENT'];
-        $failedLoginStdClass->ip_address = $_SERVER["REMOTE_ADDR"];
-        $failedLoginStdClass->geo_location = 'Brazil';
-        $failedLoginStdClass->attempt_time = new \DateTime("now");
+        // $failedLoginStdClass->user = null;
+        // $failedLoginStdClass->username = null;
+        // $failedLoginStdClass->user_agent = $_SERVER['HTTP_USER_AGENT'];
+        // $failedLoginStdClass->ip_address = $_SERVER["REMOTE_ADDR"];
+        // $failedLoginStdClass->geo_location = 'Brazil';
+        // $failedLoginStdClass->attempt_time = new \DateTime("now");
 
         $userDTO = $userModel->getDTO(["email" => $email]);
 
         if ($userDTO === null) {
 
-            $failedLoginStdClass->reason = "User not found";
-            $failedLoginDTO = FailedLoginDTO::createFromStdClass($failedLoginStdClass);
-            $failedLoginModel->insertDTO($failedLoginDTO);
+            // $failedLoginStdClass->reason = "User not found";
+            // $failedLoginDTO = FailedLoginDTO::createFromStdClass($failedLoginStdClass);
+            // $failedLoginModel->insertDTO($failedLoginDTO);
 
             return false;
 
@@ -44,10 +45,10 @@ class Authentication implements Auth {
 
         }
 
-        $failedLoginStdClass->user = $userModel->getOneBy(["id" => $userDTO->id]);
-        $failedLoginStdClass->reason = "Password incorrect";
-        $failedLoginDTO = FailedLoginDTO::createFromStdClass($failedLoginStdClass);
-        $failedLoginModel->insertDTO($failedLoginDTO);
+        // $failedLoginStdClass->user = $userModel->getOneBy(["id" => $userDTO->id]);
+        // $failedLoginStdClass->reason = "Password incorrect";
+        // $failedLoginDTO = FailedLoginDTO::createFromStdClass($failedLoginStdClass);
+        // $failedLoginModel->insertDTO($failedLoginDTO);
 
         return false;
 

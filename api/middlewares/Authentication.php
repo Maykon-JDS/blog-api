@@ -3,7 +3,7 @@
 namespace Middlewares;
 
 use Middlewares\Handler;
-use Services\Authentication as Auth;
+use Services\AuthenticationService;
 use Libs\Adapter\Response\Response;
 use Libs\Adapter\Request\RequestInterface;
 
@@ -19,7 +19,7 @@ class Authentication extends Handler
 
         $token = $content['token'] ?? null;
 
-        if (Auth::check($token)) {
+        if (AuthenticationService::check($token)) {
 
             return;
         }
