@@ -22,6 +22,7 @@ $config = ORMSetup::createAttributeMetadataConfiguration(
 // configuring the database connection
 $connection = DriverManager::getConnection([
     'driver' => $driver[$_ENV['DB_DRIVER']],
+    'host'     => $_ENV['DB_HOST'],
     'user'     => $_ENV['DB_USERNAME'],
     'port'     => $_ENV['DB_PORT'],
     'password' => $_ENV['DB_PASSWORD'],

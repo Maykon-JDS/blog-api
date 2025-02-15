@@ -1,7 +1,12 @@
 <?php
-// src/Product.php
 
+namespace Entities;
+
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Entities\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'api_tokens')]
@@ -12,8 +17,9 @@ class ApiToken
     #[ORM\GeneratedValue]
     private int|null $id = null;
 
-    #[ORM\Column(type: 'integer')]
-    private int $fk_users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'apiTokens')]
+    #[ORM\JoinColumn(name: 'fk_users_id', referencedColumnName: 'id', nullable: false)]
+    private User $user;
 
     #[ORM\Column(type: 'string')]
     private string $token_type;
@@ -41,14 +47,14 @@ class ApiToken
         return $this->id;
     }
 
-    public function getFkUsersId() : int
+    public function getUser() : User
     {
-        return $this->fk_users_id;
+        return $this->user;
     }
 
-    public function setFkUsersId(int $fk_users_id) : void
+    public function setUser(User $user) : void
     {
-        $this->fk_users_id = $fk_users_id;
+        $this->user = $user;
     }
 
     public function getTokenType() : string

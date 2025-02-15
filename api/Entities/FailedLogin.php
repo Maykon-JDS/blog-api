@@ -1,7 +1,10 @@
 <?php
-// src/Product.php
+
+namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use Entities\User;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'failed_logins')]
@@ -12,8 +15,9 @@ class FailedLogin
     #[ORM\GeneratedValue]
     private int|null $id = null;
 
-    #[ORM\Column(type: 'integer')]
-    private int $fk_users_id;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'failed_logins')]
+    #[ORM\JoinColumn(name: 'fk_users_id', referencedColumnName: 'id', nullable: true)]
+    private User $user;
 
     #[ORM\Column(type: 'string')]
     private string $username;
@@ -44,15 +48,16 @@ class FailedLogin
         return $this->id;
     }
 
-    public function getFkUsersId() : ?int
+    public function getUser() : ?User
     {
-        return $this->fk_users_id;
+        return $this->user;
     }
 
-    public function setFkUsersId(int $fk_users_id): void
+    public function setUser(User $user): void
     {
-        $this->fk_users_id = $fk_users_id;
+        $this->user = $user;
     }
+
     public function getUsername() : string
     {
         return $this->username;
