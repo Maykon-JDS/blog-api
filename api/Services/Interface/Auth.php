@@ -2,7 +2,7 @@
 
 namespace Services\Interface;
 
-interface Authentication {
+interface Auth {
 
     static public function attempt($user, $password);
 

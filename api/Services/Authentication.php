@@ -2,7 +2,7 @@
 
 namespace Services;
 
-use Services\Interface\Authentication as Auth;
+use Services\Interface\Auth;
 use Models\User;
 
 class Authentication implements Auth {
