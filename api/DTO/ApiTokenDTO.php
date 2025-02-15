@@ -15,11 +15,11 @@ class ApiTokenDTO implements DTO
 
     public readonly int|null $id;
     public readonly User|null $user;
-    public readonly string $token_type;
-    public readonly string $token_value;
-    public readonly string $revoked;
-    public readonly string $expiration_date;
-    public readonly string $description;
+    public readonly string|null $token_type;
+    public readonly string|null $token_value;
+    public readonly bool|null $revoked;
+    public readonly DateTime|null $expiration_date;
+    public readonly string|null $description;
     public readonly DateTime|null $created_at;
     public readonly DateTime|null $update_at;
 
@@ -79,7 +79,6 @@ class ApiTokenDTO implements DTO
         $dto->description = $apiToken->getDescription() ?? null;
         $dto->created_at = $apiToken->getCreatedAt() ?? null;
         $dto->update_at = $apiToken->getUpdateAt() ?? null;
-
 
         return $dto;
 
