@@ -40,12 +40,12 @@ services:
           memory: 200M
     build:
       context: ../
-      dockerfile: ../docker/php/Dockerfile
+      dockerfile: ./docker/php/Dockerfile
       tags:
         - "api-php:1.0"
         - "api-php:latest"
     ports:
-      - "8001:8001"
+      - "80:8001"
     volumes:
     #   creates a bind mount, meaning that changes made to the ./project
     #   directory on the host will be reflected inside the container at

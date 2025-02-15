@@ -11,7 +11,7 @@
             "Enum\\": "./Enum/",
             "Libs\\": "./Libs/",
             "Services\\": "./Services/",
-            "DTOs\\": "./DTOs/",
+            "DTO\\": "./DTO/",
             "Models\\": "./Models/",
             "Middlewares\\": "./Middlewares/"
 

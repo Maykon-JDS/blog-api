@@ -20,7 +20,7 @@ logs:
 # 	@docker-compose exec php-fpm bash
 
 mysql:
-	@docker exec -ti docker-database mysql --password=$(DB_PASSWORD) --database=$(DB_DATABASE)
+	@docker exec -ti docker-database mysql -u root --password=$(DB_PASSWORD) --database=$(DB_DATABASE)
 
 # composer:
 # 	docker run -it \

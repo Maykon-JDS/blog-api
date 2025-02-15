@@ -7,7 +7,8 @@ use Middlewares\AcceptRequest;
 use Libs\Adapter\Request\Request;
 use Libs\Adapter\Response\Response;
 use Entities\User;
-
+use Models\User as UserModel;
+use Services\Authentication;
 
 // use Stichoza\GoogleTranslate\GoogleTranslate;
 // use Core\FactoryMethods\RequestBodyParamsHandlerFactory\RequestBodyParamsHandlerFactory;
@@ -37,10 +38,21 @@ use Entities\User;
 // print_r($result->fetchAll());
 
 // phpinfo();
-
 try {
 
     // $user = new User();
+
+    $userModel = new UserModel();
+
+    $userEntity = $userModel->getOneBy(["email" => "maykondias2002@gmail.com"]);
+
+    $failedLogins = $userEntity->getFailedLogins();
+
+    foreach ($failedLogins as $failedLogin) {
+
+       echo $failedLogin;
+
+    }
 
     // $user->setUsername("Maykon");
 
@@ -52,15 +64,7 @@ try {
 
     // $entityManager->flush();
 
-    $user = $entityManager->getRepository(User::class)->findOneBy(['email' => 'maykondias2001@gmail.com']);
-
-    if($user->getPassword() !== "12345"){
-
-        echo "Senha Incorreta";
-
-    }
-
-    echo $user->getUserName();
+    // echo Authentication::attempt("maykondias2002@gmail.com", "1234");
 
 } catch (\Throwable $th) {
 
@@ -69,6 +73,7 @@ try {
 }
 
 exit;
+exit();
 
 $request = new Request();
 

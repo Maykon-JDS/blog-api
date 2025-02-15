@@ -4,14 +4,13 @@ namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTime;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'users')]
 #[HasLifecycleCallbacks]
-class User
+class User extends Entity
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -59,7 +58,7 @@ class User
         return $this->failed_logins;
     }
 
-    public function getId() : ?int
+    public function getId() : int
     {
         return $this->id;
     }

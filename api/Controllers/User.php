@@ -23,7 +23,7 @@ class User extends Controller {
 
         $response->setHeader('Content-Type', 'application/json');
 
-        $token = Authentication::attempt("admin", "admin");
+        // $token = Authentication::attempt("admin", "admin");
 
         if ($token) {
             $response->setContent(json_encode(['Login successful', 'token' => $token]));

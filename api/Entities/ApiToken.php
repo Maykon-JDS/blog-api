@@ -7,10 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Entities\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'api_tokens')]
-class ApiToken
+#[HasLifecycleCallbacks]
+class ApiToken extends Entity
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -41,6 +43,17 @@ class ApiToken
 
     #[ORM\Column(type: 'datetime')]
     private DateTime $update_at;
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updatedDateTimes(): void
+    {
+        $this->setUpdateAt(new \DateTime('now'));
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt(new \DateTime('now'));
+        }
+    }
+
 
     public function getId(): ?int
     {

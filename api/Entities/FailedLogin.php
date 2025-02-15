@@ -4,11 +4,13 @@ namespace Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Entities\User;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'failed_logins')]
-class FailedLogin
+#[HasLifecycleCallbacks]
+class FailedLogin extends Entity
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
@@ -17,10 +19,10 @@ class FailedLogin
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'failed_logins')]
     #[ORM\JoinColumn(name: 'fk_users_id', referencedColumnName: 'id', nullable: true)]
-    private User $user;
+    private User|null $user;
 
-    #[ORM\Column(type: 'string')]
-    private string $username;
+    #[ORM\Column(type: 'string', nullable:true)]
+    private string|null $username;
 
     #[ORM\Column(type: 'string')]
     private string $user_agent;
@@ -32,16 +34,26 @@ class FailedLogin
     private string $ip_address;
 
     #[ORM\Column(type: 'string')]
-    private string $geo_location;
+    private string|null $geo_location;
 
     #[ORM\Column(type: 'datetime')]
-    private DateTime $attempt_time;
+    private DateTime|null $attempt_time;
 
     #[ORM\Column(type: 'datetime')]
-    private DateTime $created_at;
+    private DateTime|null $created_at = null;
 
     #[ORM\Column(type: 'datetime')]
-    private DateTime $update_at;
+    private DateTime|null $update_at = null;
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updatedDateTimes(): void
+    {
+        $this->setUpdateAt(new \DateTime('now'));
+        if ($this->getCreatedAt() === null) {
+            $this->setCreatedAt(new \DateTime('now'));
+        }
+    }
 
     public function getId() : ?int
     {
@@ -53,7 +65,7 @@ class FailedLogin
         return $this->user;
     }
 
-    public function setUser(User $user): void
+    public function setUser(User|null $user): void
     {
         $this->user = $user;
     }
@@ -63,7 +75,7 @@ class FailedLogin
         return $this->username;
     }
 
-    public function setUsername(string $username): void
+    public function setUsername(string|null $username): void
     {
         $this->username = $username;
     }
@@ -100,11 +112,11 @@ class FailedLogin
         return $this->geo_location;
     }
 
-    public function setGeoLocation(string $geo_location): void
+    public function setGeoLocation(string|null $geo_location): void
     {
         $this->geo_location = $geo_location;
     }
-    public function getAttemptTime() : DateTime
+    public function getAttemptTime() : DateTime|null
     {
         return $this->attempt_time;
     }
@@ -113,7 +125,7 @@ class FailedLogin
     {
         $this->attempt_time = $attempt_time;
     }
-    public function getCreatedAt() : DateTime
+    public function getCreatedAt() : DateTime|null
     {
         return $this->created_at;
     }
@@ -122,7 +134,7 @@ class FailedLogin
     {
         $this->created_at = $created_at;
     }
-    public function getUpdateAt() : DateTime
+    public function getUpdateAt() : DateTime|null
     {
         return $this->update_at;
     }

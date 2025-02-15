@@ -2,38 +2,45 @@
 
 namespace Models;
 
-use DTOs\User as UserDTO;
+use DTO\UserDTO;
 use Models\Model;
+use Doctrine\ORM\EntityRepository;
+use Entities\User as EntityUser;
 
-class User extends Model {
+class User extends Model
+{
 
-    private $database = [];
+    // private $database = [];
+    private EntityRepository $userRepository;
 
-    public function __construct() {
-        $jsonContent = file_get_contents('./Models/database.json');
-        $this->database = json_decode($jsonContent, true);
+    public function __construct()
+    {
+
+        $this->userRepository = self::$entityManager->getRepository(EntityUser::class);
     }
 
-    private function save() {
-        file_put_contents('./Models/database.json', json_encode($this->database, JSON_PRETTY_PRINT));
+    // TODO: Move to Repository
+    public function getDTO(array $criteria): UserDTO|null
+    {
+
+        $userEntity = $this->userRepository->findOneBy($criteria);
+
+        if (empty($userEntity)) {
+            return null;
+        }
+
+        return UserDTO::createFromEntity($userEntity);
     }
 
-    public function getUser():UserDTO {
+    public function getOneBy(array $criteria): EntityUser|null
+    {
 
-        return new UserDTO($this->database[0]);
+        $userEntity = $this->userRepository->findOneBy($criteria);
 
+        if (empty($userEntity)) {
+            return null;
+        }
+
+        return $userEntity;
     }
-
-    public function getUsers():array {
-        return array_map(function($record) {
-            return new UserDTO($record);
-        }, $this->database);
-    }
-
-    public function updateUser(Array $data) {
-        $this->database[0] = $data;
-        $this->save();
-    }
-
-
 }
