@@ -23,40 +23,40 @@ class FailedLoginDTO implements DTO
     public readonly DateTime|null $created_at;
     public readonly DateTime|null $update_at;
 
-    static public function createFromStdClass(stdClass $data) : self
+    static public function createFromStdClass(stdClass $failedLogin) : self
     {
 
         $dto = new self();
 
-        $dto->id = $data->id ?? null;
-        $dto->user = $data->user ?? null;
-        $dto->username = $data->username ?? null;
-        $dto->user_agent = $data->user_agent ?? null;
-        $dto->reason = $data->reason ?? null;
-        $dto->ip_address = $data->ip_address ?? null;
-        $dto->geo_location = $data->geo_location ?? null;
-        $dto->attempt_time = $data->attempt_time ?? null;
-        $dto->created_at = $data->created_at ?? null;
-        $dto->update_at = $data->update_at ?? null;
+        $dto->id = $failedLogin->id ?? null;
+        $dto->user = $failedLogin->user ?? null;
+        $dto->username = $failedLogin->username ?? null;
+        $dto->user_agent = $failedLogin->user_agent ?? null;
+        $dto->reason = $failedLogin->reason ?? null;
+        $dto->ip_address = $failedLogin->ip_address ?? null;
+        $dto->geo_location = $failedLogin->geo_location ?? null;
+        $dto->attempt_time = $failedLogin->attempt_time ?? null;
+        $dto->created_at = $failedLogin->created_at ?? null;
+        $dto->update_at = $failedLogin->update_at ?? null;
 
         return $dto;
 
     }
 
-    static public function createFromArray(array $data) : self
+    static public function createFromArray(array $failedLogin) : self
     {
 
         $dto = new self();
 
-        $dto->id = $data['id'] ?? null;
-        $dto->user = $data['user'] ?? null;
-        $dto->user_agent = $data['user_agent'] ?? null;
-        $dto->reason = $data['reason'] ?? null;
-        $dto->ip_address = $data['ip_address'] ?? null;
-        $dto->geo_location = $data['geo_location'] ?? null;
-        $dto->attempt_time = $data['attempt_time'] ?? null;
-        $dto->created_at = $data['created_at'] ?? null;
-        $dto->update_at = $data['update_at'] ?? null;
+        $dto->id = $failedLogin['id'] ?? null;
+        $dto->user = $failedLogin['user'] ?? null;
+        $dto->user_agent = $failedLogin['user_agent'] ?? null;
+        $dto->reason = $failedLogin['reason'] ?? null;
+        $dto->ip_address = $failedLogin['ip_address'] ?? null;
+        $dto->geo_location = $failedLogin['geo_location'] ?? null;
+        $dto->attempt_time = $failedLogin['attempt_time'] ?? null;
+        $dto->created_at = $failedLogin['created_at'] ?? null;
+        $dto->update_at = $failedLogin['update_at'] ?? null;
 
         return $dto;
 
