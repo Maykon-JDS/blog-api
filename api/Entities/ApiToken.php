@@ -5,8 +5,6 @@ namespace Entities;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Entities\User;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 #[ORM\Entity]
