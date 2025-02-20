@@ -4,6 +4,9 @@ include ./api/.env
 build:
 	@docker compose -f ./api/docker-compose.yml build --no-cache
 
+up.r:
+	@docker compose -f ./api/docker-compose.yml up -d --force-recreate
+
 up:
 	@docker compose -f ./api/docker-compose.yml up -d
 
