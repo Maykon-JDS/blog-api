@@ -2,7 +2,7 @@
 include ./api/.env
 
 build:
-	@docker compose -f ./api/docker-compose.yml build -d --no-cache
+	@docker compose -f ./api/docker-compose.yml build --no-cache
 
 up:
 	@docker compose -f ./api/docker-compose.yml up -d
