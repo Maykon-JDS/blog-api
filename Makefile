@@ -1,6 +1,9 @@
 # Load .env file if it exists
 include ./api/.env
 
+build:
+	@docker compose -f ./api/docker-compose.yml build -d --no-cache
+
 up:
 	@docker compose -f ./api/docker-compose.yml up -d
 
@@ -64,3 +67,38 @@ orm.s.products:
 
 orm.u.products:
 	@php api/bin/update_products
+
+
+
+# docker ps -a
+
+# Lista todos os contêineres. O sinalizador -a mostra contêineres em execução e não em execução. Para exibir somente contêineres em execução, esse sinalizador pode ser omitido.
+
+# docker rename [contêiner] [novo_nome]
+
+# Renomeia o contêiner fornecido como novo_nome.
+
+# docker start [contêiner]
+
+# Executa o contêiner fornecido.
+
+# docker stop [contêiner]
+
+# Interrompe o contêiner fornecido.
+
+# docker wait [contêiner]
+
+# Faz com que o contêiner especificado espere até que outros contêineres em execução sejam interrompidos.
+
+
+# Docker build -t image_name .
+
+# Cria uma imagem do Docker com a tag image_name a partir dos arquivos no diretório atual.
+
+# docker create [imagem]
+
+# Cria um contêiner não executado a partir da imagem fornecida.
+
+# docker run [imagem]
+
+# Cria e executa um contêiner com base na imagem fornecida.
