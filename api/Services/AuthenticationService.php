@@ -2,63 +2,71 @@
 
 namespace Services;
 
+use Doctrine\Common\Lexer\Token;
+use Libs\Facade\JWT\Lcobucci\JWT;
 use Services\Interface\Auth;
-use Models\User;
-use Models\FailedLogin;
-use DTO\FailedLoginDTO;
-use Exceptions\UserNotFoundException;
-use stdClass;
+use Repositories\UserRepository;
+use DTO\UserDTO;
 
-class AuthenticationService implements Auth {
+class AuthenticationService implements Auth
+{
 
-    static public function attempt($email, $password) {
+    private TokenService $tokenService;
 
-        $userModel = new User();
-        // $failedLoginModel = new FailedLogin();
-        // $failedLoginStdClass = new stdClass();
+    public function __construct()
+    {
+        $this->tokenService = new TokenService();
+    }
 
-        // $failedLoginStdClass->user = null;
-        // $failedLoginStdClass->username = null;
-        // $failedLoginStdClass->user_agent = $_SERVER['HTTP_USER_AGENT'];
-        // $failedLoginStdClass->ip_address = $_SERVER["REMOTE_ADDR"];
-        // $failedLoginStdClass->geo_location = 'Brazil';
-        // $failedLoginStdClass->attempt_time = new \DateTime("now");
+    public function attempt($email, $password)
+    {
 
-        $userDTO = $userModel->getDTO(["email" => $email]);
+        $userRepository = new UserRepository();
 
-        if ($userDTO === null) {
+        $userEntity = $userRepository->findOneBy(["email" => $email]);
 
-            // $failedLoginStdClass->reason = "User not found";
-            // $failedLoginDTO = FailedLoginDTO::createFromStdClass($failedLoginStdClass);
-            // $failedLoginModel->insertDTO($failedLoginDTO);
+        if (empty($userEntity)) {
 
-            return false;
+            throw new UserNotFoundException();
+        }
 
+        // $userDTO = UserDTO::createFromEntity($userEntity);
+
+        if ($userEntity->getPassword() !== $password) {
+
+            throw new IncorrectPasswordException();
         }
 
         // TODO: Implement this
-        if ($userDTO->password === $password) {
 
-            $token = bin2hex(random_bytes(16));
+        $payload = [
+            'iss' => "teste",
+            'aud' => "teste",
+            'sub' => "{$userEntity->getId()}",
+            // 'iat' => time(),
+            'exp' => '+25 seconds',
+            // 'uid' => $userDTO->id,
+        ];
 
-            return $token;
+        $token = $this->tokenService->issueToken($payload);
 
-        }
-
-        // $failedLoginStdClass->user = $userModel->getOneBy(["id" => $userDTO->id]);
-        // $failedLoginStdClass->reason = "Password incorrect";
-        // $failedLoginDTO = FailedLoginDTO::createFromStdClass($failedLoginStdClass);
-        // $failedLoginModel->insertDTO($failedLoginDTO);
-
-        return false;
-
+        return $token;
     }
 
-    static public function check($token) {
+    public function check($token)
+    {
 
-        // if (!$token) {
-        //     return false;
-        // }
+        if (empty($token)) {
+            return false;
+        }
+
+        $jwt = new JWT();
+        echo "Token: " . $token . "\n";
+        echo "teste: " . var_dump($jwt->validateToken($token));
+
+        if ($jwt->validateToken($token)) {
+            return true;
+        }
 
         // $userModel = new User();
 
@@ -89,7 +97,27 @@ class AuthenticationService implements Auth {
         // }
 
         return false;
-
     }
+}
 
+// TODO: Extract to a separete file or folder
+class UserNotFoundException extends \Exception
+{
+    public function __construct(?\Throwable $previous = null)
+    {
+        $code = 0;
+        $message = 'User not found';
+        parent::__construct($message, $code, $previous);
+    }
+}
+
+// TODO: Extract to a separete file or folder
+class IncorrectPasswordException extends \Exception
+{
+    public function __construct(?\Throwable $previous = null)
+    {
+        $code = 0;
+        $message = 'Incorrect Password';
+        parent::__construct($message, $code, $previous);
+    }
 }
