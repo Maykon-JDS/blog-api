@@ -2,6 +2,7 @@
 
 namespace Libs\Adapter\Response\Symfony;
 
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 use Libs\Adapter\Response\ResponseInterface;
 
@@ -25,8 +26,23 @@ class ResponseAdapter implements ResponseInterface{
         return $this->response->headers->set($name, $value);
     }
 
+    public function setCookie($name, $value){
+
+        // TODO: Finish the cookie implementation
+        // $cookie = new Cookie($content['name'], $content['value'], $content['expire'], $content['path'], $content['domain'], $content['secure'], $content['httponly']);
+
+        $cookie = new Cookie($name, $value);
+
+        $this->response->headers->setCookie($cookie);
+    }
+
     public function send(){
         $this->response->send();
         exit;
+    }
+
+    public function sendJson(){
+        $this->setHeader('Content-Type', 'application/json');
+        $this->send();
     }
 }
