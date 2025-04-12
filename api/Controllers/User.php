@@ -2,87 +2,93 @@
 
 namespace Controllers;
 
+use DTO\UserDTO;
 use stdClass;
 use Libs\Adapter\Request\Request;
 use Libs\Adapter\Response\Response;
-use Services\AuthenticationService;
-use Models\User as UserModel;
+use Services\UserService;
 
+class User extends Controller
+{
 
-class User extends Controller {
+    private UserService $userService;
 
-    public function login($pathParameters, $queryParameters){
+    public function __construct()
+    {
 
-        extract($pathParameters);
-        extract($queryParameters);
+        $this->userService = new UserService();
+    }
 
-        $std = new stdClass();
+    public function login($pathParameters, $queryParameters)
+    {
 
-        $request = new Request();
-        $response = new Response();
+        try {
 
-        $response->setHeader('Content-Type', 'application/json');
+            extract($pathParameters);
+            extract($queryParameters);
 
-        // $token = AuthenticationService::attempt("admin", "admin");
+            $request = new Request();
+            $response = new Response();
 
-        if ($token) {
-            $response->setContent(json_encode(['Login successful', 'token' => $token]));
+            $contentJson = $request->getContent();
+            $content = json_decode($contentJson, true);
+
+            $email = $content['email'] ?? null;
+            $password = $content['password'] ?? null;
+
+            $userDTO = UserDTO::createFromArray([
+                "email" => $email,
+                "password" => $password,
+            ]);
+
+            $token = $this->userService->login($userDTO);
+
+            $response->setCookie("token", $token);
+            $response->setContent(json_encode(["message" => 'Login successful']));
             $response->setStatusCode(200);
-        } else {
-            $response->setContent('Login failed');
+        } catch (\Exception $e) {
+
+            $response->setContent(json_encode(["message" => $e->getMessage(), "error" => ["code" => $e->getCode(), "type" => "TODO", "description" => "TODO"]]));
             $response->setStatusCode(401);
         }
 
-        $response->send();
-
+        $response->sendJson();
     }
 
-    public function teste($pathParameters, $queryParameters){
 
-        extract($pathParameters);
-        extract($queryParameters);
+    public function register($pathParameters, $queryParameters)
+    {
+        try {
 
-        $std = new stdClass();
+            extract($pathParameters);
+            extract($queryParameters);
 
-        $response = new Response();
+            $request = new Request();
+            $response = new Response();
 
-        $response->setHeader('Content-Type', 'application/json');
+            $contentJson = $request->getContent();
+            $content = json_decode($contentJson, true);
 
-        // if (Authentication::check('0637b30b6b3ab6421529d7e6b1296ad9')) {
-            $response->setContent(json_encode(['teste']));
-            $response->setStatusCode(200);
-        // } else {
-        //     $response->setContent(json_encode(['Unauthorized']));
-        //     $response->setStatusCode(401);
-        // }
+            $username = $content['username'] ?? null;
+            $email = $content['email'] ?? null;
+            $password = $content['password'] ?? null;
 
-        $response->send();
+            $userDTO = UserDTO::createFromArray([
+                "username" => $username,
+                "email" => $email,
+                "password" => $password,
+            ]);
 
-        return;
+            $this->userService->register($userDTO);
 
-    }
+            $response->setContent(json_encode(["message" => 'User created successfully']));
+            $response->setStatusCode(201);
+        } catch (\Exception $e) {
 
-    public function teste2($pathParameters, $queryParameters){
-
-        extract($pathParameters);
-        extract($queryParameters);
-
-        $std = new stdClass();
-
-        $response = new Response();
-
-        $response->setHeader('Content-Type', 'application/json');
-
-        if (AuthenticationService::check('0637b30b6b3ab6421529d7e6b1296ad9')) {
-            $response->setContent(json_encode(['Authorized']));
-            $response->setStatusCode(200);
-        } else {
-            $response->setContent(json_encode(['Unauthorized']));
-            $response->setStatusCode(401);
+            $response->setContent(json_encode(["message" => $e->getMessage(), "error" => ["code" => $e->getCode(), "type" => "TODO", "description" => "TODO"]]));
+            $response->setStatusCode(400);
         }
 
-        $response->send();
-
+        $response->sendJson();
     }
-
 }
