@@ -2,10 +2,10 @@
 
 namespace Services\Interface;
 
-interface Auth {
+interface Auth extends Service {
 
-    static public function attempt($user, $password);
+    public function attempt($user, $password);
 
-    static public function check($token);
+    public function check($token);
 
 }
