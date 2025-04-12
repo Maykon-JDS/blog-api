@@ -1,13 +1,13 @@
 <?php
 
-namespace Models;
+namespace Repositories;
 
 use DTO\FailedLoginDTO;
-use Models\Model;
+use Repositories\Repository;
 use Doctrine\ORM\EntityRepository;
 use Entities\FailedLogin as FailedLoginEntity;
 
-class FailedLogin extends Model {
+class FailedLoginRepository extends Repository {
 
     private EntityRepository $failedLoginRepository;
 

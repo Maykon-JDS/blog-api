@@ -1,10 +1,10 @@
 <?php
 
-namespace Models;
+namespace Repositories;
 
 use Doctrine\ORM\EntityManager;
 
-abstract class Model {
+abstract class Repository {
 
     static protected EntityManager $entityManager;
 
