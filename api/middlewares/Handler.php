@@ -13,7 +13,8 @@ abstract class Handler
     abstract protected function breakChain() : void;
 
 
-    public function __construct(Handler $handler = null)
+    // TODO: Fix the constructor
+    public function __construct(Handler|null $handler = null)
     {
 
         if ($handler) {
